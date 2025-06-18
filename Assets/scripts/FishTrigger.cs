@@ -25,7 +25,7 @@ public class FishTrigger : MonoBehaviour
             {
                 GetComponent<MeshRenderer>().enabled = false;
             }
-            // If it has children with renderers (e.g., a complex model)
+            // If it has children with renderers 
             foreach (Transform child in transform)
             {
                 if (child.GetComponent<MeshRenderer>() != null)
@@ -34,12 +34,11 @@ public class FishTrigger : MonoBehaviour
                 }
             }
 
-            // Destroy the GameObject after a short delay (e.g., 0.1 seconds)
+            // Destroy the GameObject after a short delay 
             // This allows the GameManager to process the collection before destruction.
             Destroy(gameObject, 0.1f);
 
-            // If you prefer to just make it disappear instantly without destroying
-            // gameObject.SetActive(false);
+            
         }
     }
 }

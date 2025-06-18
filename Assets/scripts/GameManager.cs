@@ -1,8 +1,8 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement; // For reloading scenes
-using TMPro;                     // For TextMeshPro UI elements
-using UnityEngine.UI;              // For Image (hunger bar fill)
+using UnityEngine.SceneManagement;
+using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,14 +16,14 @@ public class GameManager : MonoBehaviour
     public float lowHungerThreshold = 20f; // Threshold for "low hunger" state
 
     [Header("UI Elements")]
-    public TextMeshProUGUI hungerText;       // Displays current hunger value (e.g., "Hunger: 75/100")
-    public Image hungerFillImage;            // The 'Filled' Image component for the hunger bar itself
-    public TextMeshProUGUI fishCountText;    // Displays fish collected count (e.g., "Fish: 3/10")
+    public TextMeshProUGUI hungerText;       
+    public Image hungerFillImage;            
+    public TextMeshProUGUI fishCountText;    
 
-    public GameObject winPanel;              // The UI panel to show when the player wins
-    public TextMeshProUGUI winText;          // Text on the win panel (e.g., "YOU WIN!")
-    public GameObject gameOverPanel;         // The UI panel to show when the game is over (lost)
-    public TextMeshProUGUI gameOverText;     // Text on the game over panel (e.g., "GAME OVER!")
+    public GameObject winPanel;              
+    public TextMeshProUGUI winText;          
+    public GameObject gameOverPanel;         
+    public TextMeshProUGUI gameOverText;     
 
     [Header("Game State")]
     [Tooltip("The cat's current hunger level.")]
@@ -46,12 +46,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // Set this instance as the singleton
             Instance = this;
-            // Optionally, keep GameManager alive across scene loads.
-            // If used, ensure RestartGame properly resets all game elements.
-            // For now, reloading the scene simplifies resets.
-            // DontDestroyOnLoad(gameObject);
         }
     }
 
@@ -69,9 +64,6 @@ public class GameManager : MonoBehaviour
         gameOver = false;
         hungerDrainEnabled = true;
 
-        // Find all active fish in the scene by their "Food" tag
-        // Note: This only counts objects currently active in the scene when Start() runs.
-        // If fish are spawned later, totalFishInScene would need to be updated.
         totalFishInScene = GameObject.FindGameObjectsWithTag("Food").Length;
 
         // Hide win/game over panels at the start of the game
