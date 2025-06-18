@@ -2,43 +2,63 @@ using UnityEngine;
 
 public class FishTrigger : MonoBehaviour
 {
-    private bool hasBeenCollected = false; // To prevent multiple triggers
+    [Header("Sound Settings")]
+    [SerializeField] private AudioClip collectSound; // The sound clip to play when collected
 
-    private void OnTriggerEnter(Collider other)
+    private bool hasBeenCollected = false;
+    private AudioSource audioSource; // Reference to the AudioSource component on this GameObject
+
+    void Awake()
     {
-        // Check if the entering collider belongs to the Player
-        // And ensure the GameManager instance exists
-        if (other.CompareTag("Player") && !hasBeenCollected && GameManager.Instance != null)
+        // Get the AudioSource component when the GameObject wakes up
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
         {
-            Debug.Log("Cat (Player) stepped on the fish! Trigger activated!");
-
-            hasBeenCollected = true; // Mark as collected
-
-            // Tell the GameManager that a fish has been collected
-            GameManager.Instance.CollectFish();
-
-            // Optionally, disable the renderer and collider immediately
-            // so the fish visually disappears, even if it's not destroyed yet.
-            GetComponent<Collider>().enabled = false;
-            // If your fish has a MeshRenderer, disable it:
-            if (GetComponent<MeshRenderer>() != null)
-            {
-                GetComponent<MeshRenderer>().enabled = false;
-            }
-            // If it has children with renderers 
-            foreach (Transform child in transform)
-            {
-                if (child.GetComponent<MeshRenderer>() != null)
-                {
-                    child.GetComponent<MeshRenderer>().enabled = false;
-                }
-            }
-
-            // Destroy the GameObject after a short delay 
-            // This allows the GameManager to process the collection before destruction.
-            Destroy(gameObject, 0.1f);
-
-            
+            Debug.LogWarning("AudioSource component not found on " + gameObject.name + ". Sound will not play.", this);
         }
     }
+
+    // This method is called when another collider enters this trigger
+    private void OnTriggerEnter(Collider other)
+    {
+        // Check if the entering collider belongs to the Player and hasn't been collected
+        if (other.CompareTag("Player") && !hasBeenCollected)
+        {
+            hasBeenCollected = true; // Mark as collected
+
+            // Play the sound effect if an AudioSource and AudioClip are assigned
+            if (audioSource != null && collectSound != null)
+            {
+                Debug.Log("Attempting to play sound: " + collectSound.name + " at volume: " + audioSource.volume + " (2D/3D: " + audioSource.spatialBlend + ")", this);
+                audioSource.PlayOneShot(collectSound);
+            }
+            else if (audioSource == null)
+            {
+                Debug.LogWarning("FishTrigger: No AudioSource found to play sound!", this);
+            }
+            else if (collectSound == null)
+            {
+                Debug.LogWarning("FishTrigger: No Collect Sound assigned to play!", this);
+            }
+
+            gameObject.SetActive(false); // Make the fish disappear
+
+            // Notify the GameManager that a fish has been collected
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.CollectFish();
+            }
+            else
+            {
+                Debug.LogWarning("GameManager instance not found! Fish collection not registered.");
+            }
+        }
+    }
+
+    // Call this method when the game restarts to make the fish collectible again
+    public void ResetFish()
+    {
+        hasBeenCollected = false;
+    }
+
 }
