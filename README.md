@@ -1,2 +1,2 @@
-going to be a collect x amount of items around the map to win type of game.
-i have permanent motion sickness while playtesting unity. its hard
+Collect fish to win game!!! 
+WASD controls, space to jump, C to crouch(useless but it exists)
