@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float lookXLimit = 45f;
 
-    public float defaultHeight = 2f;
+    public float defaultHeight = 0.37f;
 
     public float crouchHeight = 1f;
 
