@@ -29,7 +29,7 @@ public class FishTrigger : MonoBehaviour
             // Play the sound effect if an AudioSource and AudioClip are assigned
             if (audioSource != null && collectSound != null)
             {
-                Debug.Log("Attempting to play sound: " + collectSound.name + " at volume: " + audioSource.volume + " (2D/3D: " + audioSource.spatialBlend + ")", this);
+                
                 audioSource.PlayOneShot(collectSound);
             }
             else if (audioSource == null)
